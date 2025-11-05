@@ -11,21 +11,26 @@ const QuizScreen = ({ route, navigation }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const API_URL = Platform.OS === 'android' 
-    ? 'http://10.0.2.2:3000' 
-    : 'http://192.168.15.11:3000';
+  // Configura URL para JSON Server
+  const API_URL = Platform.OS === 'android'
+    ? 'http://10.0.2.2:3000'   // Emulador Android
+    : 'http://192.168.15.11:3000'; // iOS ou físico (ajuste o IP)
 
+  // Função para carregar perguntas do servidor
   const loadQuestions = () => {
+    console.log('🚀 Carregando perguntas com dificuldade:', difficulty);
     setLoading(true);
     setError(null);
+
     axios.get(`${API_URL}/questions?difficulty=${difficulty}&_limit=10`)
       .then(res => {
+        console.log(`✅ ${res.data.length} perguntas carregadas`);
         setQuestions(res.data);
         setLoading(false);
       })
       .catch(err => {
-        console.log('Erro:', err.message);
-        setError('Sem conexão com o servidor');
+        console.error('❌ Erro ao buscar perguntas:', err.message);
+        setError('Falha na conexão com o servidor. Verifique se o JSON Server está rodando.');
         setLoading(false);
       });
   };
@@ -35,31 +40,50 @@ const QuizScreen = ({ route, navigation }) => {
   }, []);
 
   const handleAnswer = (selected) => {
-    const isCorrect = selected === questions[current].correct_answer;
-    if (isCorrect) setScore(score + 1);
+    if (!questions[current]) return;
 
-    if (current < 9) {
-      setCurrent(current + 1);
+    const correct = questions[current].correct_answer;
+    const isCorrect = selected === correct;
+
+    console.log(`🧐 Pergunta ${current + 1}: Resposta escolhida "${selected}" (${isCorrect ? 'CORRETA' : 'ERRADA'})`);
+
+    if (isCorrect) setScore(prev => prev + 1);
+
+    if (current < questions.length - 1) {
+      setCurrent(prev => prev + 1);
     } else {
       const finalScore = isCorrect ? score + 1 : score;
-      navigation.replace('Result', { score: finalScore, total: 10 });
+      console.log(`🏁 Quiz finalizado! Pontuação: ${finalScore}/10`);
+      navigation.replace('Result', { score: finalScore, total: questions.length });
     }
   };
 
-  if (loading) return <ActivityIndicator size="large" color="#FF4500" style={styles.center} />;
-  if (error) return (
-    <View style={styles.center}>
-      <Text style={styles.error}>{error}</Text>
-      <TouchableOpacity style={styles.retry} onPress={loadQuestions}>
-        <Text style={styles.retryText}>Tentar novamente</Text>
-      </TouchableOpacity>
-    </View>
-  );
+  if (loading) {
+    return (
+      <View style={styles.center}>
+        <ActivityIndicator size="large" color="#FF4500" />
+        <Text style={{ marginTop: 10 }}>Carregando perguntas...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.center}>
+        <Text style={styles.error}>{error}</Text>
+        <TouchableOpacity style={styles.retry} onPress={loadQuestions}>
+          <Text style={styles.retryText}>🔄 Tentar novamente</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.progress}>Pergunta {current + 1}/10</Text>
-      <QuestionCard question={questions[current]} onAnswer={handleAnswer} />
+      <Text style={styles.progress}>Pergunta {current + 1} / {questions.length}</Text>
+      {questions.length > 0 && (
+        <QuestionCard question={questions[current]} onAnswer={handleAnswer} />
+      )}
     </View>
   );
 };
@@ -68,7 +92,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: '#FFF8DC' },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   progress: { fontSize: 18, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 },
-  error: { color: 'red', fontSize: 18, marginBottom: 20 },
+  error: { color: 'red', fontSize: 18, marginBottom: 20, textAlign: 'center' },
   retry: { backgroundColor: '#FF4500', padding: 15, borderRadius: 10 },
   retryText: { color: '#fff', fontWeight: 'bold' },
 });

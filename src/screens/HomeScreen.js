@@ -2,25 +2,27 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
 
 const HomeScreen = ({ navigation }) => {
-  const startQuiz = (difficulty) => navigation.navigate('Quiz', { difficulty });
+  const startQuiz = (difficulty) => {
+    console.log(`🎯 Iniciando quiz com dificuldade: ${difficulty}`);
+    navigation.navigate('Quiz', { difficulty });
+  };
 
   return (
-    <ImageBackground source={{ uri: 'https://i.imgur.com/9jW7y0g.jpg' }} style={styles.bg}>
+    <ImageBackground
+      source={{ uri: 'https://i.imgur.com/9jW7y0g.jpg' }}
+      style={styles.bg}
+    >
       <View style={styles.container}>
-        <Text style={styles.title}>ChurrasQuiz</Text>
+        <Text style={styles.title}>🔥 ChurrasQuiz</Text>
         <Text style={styles.subtitle}>Teste seus conhecimentos de churrasco!</Text>
 
-        <TouchableOpacity style={styles.btn} onPress={() => startQuiz('easy')}>
-          <Text style={styles.btnText}>Fácil</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.btn} onPress={() => startQuiz('medium')}>
-          <Text style={styles.btnText}>Médio</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.btn} onPress={() => startQuiz('hard')}>
-          <Text style={styles.btnText}>Difícil</Text>
-        </TouchableOpacity>
+        {['easy', 'medium', 'hard'].map((level, i) => (
+          <TouchableOpacity key={i} style={styles.btn} onPress={() => startQuiz(level)}>
+            <Text style={styles.btnText}>
+              {level === 'easy' ? 'Fácil' : level === 'medium' ? 'Médio' : 'Difícil'}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </View>
     </ImageBackground>
   );

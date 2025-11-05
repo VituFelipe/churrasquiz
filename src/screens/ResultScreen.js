@@ -11,9 +11,11 @@ const ResultScreen = ({ route, navigation }) => {
     const linguica = (p * 0.2).toFixed(1);
     const cerveja = Math.round(p * 3.5);
 
+    console.log(`🍖 Gerando churras para ${p} pessoas...`);
+
     Alert.alert(
-      'Seu Churras!',
-      `Para ${p} pessoas:\n\nCarne: ${carne} kg\nLinguiça: ${linguica} kg\nCerveja: ${cerveja} latas`,
+      '🍺 Seu Churras!',
+      `Para ${p} pessoas:\n\n🥩 Carne: ${carne} kg\n🌭 Linguiça: ${linguica} kg\n🍻 Cerveja: ${cerveja} latas`,
       [{ text: 'OK' }]
     );
   };
@@ -21,10 +23,15 @@ const ResultScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Parabéns!</Text>
-      <Text style={styles.score}>Você acertou {score} de {total}</Text>
+      <Text style={styles.score}>Você acertou {score} de {total} perguntas!</Text>
 
-      <Text style={styles.label}>Quantas pessoas vão?</Text>
-      <TextInput style={styles.input} keyboardType="numeric" value={people} onChangeText={setPeople} />
+      <Text style={styles.label}>Quantas pessoas vão participar?</Text>
+      <TextInput
+        style={styles.input}
+        keyboardType="numeric"
+        value={people}
+        onChangeText={setPeople}
+      />
 
       <TouchableOpacity style={styles.btn} onPress={calculateBBQ}>
         <Text style={styles.btnText}>Gerar Churras</Text>
@@ -40,7 +47,7 @@ const ResultScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFF8DC', padding: 20 },
   title: { fontSize: 36, fontWeight: 'bold', color: '#B22222', marginBottom: 20 },
-  score: { fontSize: 24, marginBottom: 40 },
+  score: { fontSize: 22, marginBottom: 40, textAlign: 'center' },
   label: { fontSize: 18, marginBottom: 10 },
   input: { borderWidth: 1, borderColor: '#ccc', width: 100, padding: 10, borderRadius: 8, textAlign: 'center', marginBottom: 20 },
   btn: { backgroundColor: '#FF4500', padding: 15, borderRadius: 10, width: 200, alignItems: 'center', marginVertical: 10 },

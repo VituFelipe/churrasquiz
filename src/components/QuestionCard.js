@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-// embaraia
 const shuffle = (array) => [...array].sort(() => Math.random() - 0.5);
 
 const QuestionCard = ({ question, onAnswer }) => {
-  // Embaralha as alternativas (correta + incorretas) tomara que agora rode essa joça
-  const [options] = useState(shuffle([...question.incorrect_answers, question.correct_answer]));
+  const [options, setOptions] = useState([]);
 
-  console.log('🧩 Renderizando questão:', question.question);
+  useEffect(() => {
+    if (question) {
+      const shuffledOptions = shuffle([...question.incorrect_answers, question.correct_answer]);
+      setOptions(shuffledOptions);
+    }
+  }, [question]);
 
   return (
     <View style={styles.card}>
@@ -27,23 +30,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 20,
     borderRadius: 15,
-    elevation: 5
+    elevation: 5,
   },
   question: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 20
+    marginBottom: 20,
   },
   option: {
     backgroundColor: '#FF6347',
     padding: 15,
     borderRadius: 10,
-    marginVertical: 8
+    marginVertical: 8,
   },
   optionText: {
     color: '#fff',
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
   },
 });
 

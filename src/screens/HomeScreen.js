@@ -9,7 +9,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <ImageBackground
-      source={{ uri: 'https://i.imgur.com/9jW7y0g.jpg' }}
+      source={require('../../assets/fundotela.jpg')}
       style={styles.bg}
     >
       <View style={styles.container}>

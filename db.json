@@ -3,11 +3,11 @@
     {
       "id": 1,
       "difficulty": "medium",
-      "question": "Qual o melhor acompanhamento #1?",
-      "correct_answer": "Farofa",
+      "question": "Qual é o corte de carne mais tradicional em um churrasco brasileiro? #1?",
+      "correct_answer": "Picanha",
       "incorrect_answers": [
-        "Arroz",
-        "Salada",
+        "Fraldinha",
+        "Picanha",
         "Batata frita"
       ]
     },
@@ -47,56 +47,56 @@
     {
       "id": 5,
       "difficulty": "hard",
-      "question": "Qual o melhor acompanhamento #5?",
-      "correct_answer": "Farofa",
+      "question": "Qual é a temperatura ideal interna de uma picanha mal passada?",
+      "correct_answer": "52°C",
       "incorrect_answers": [
-        "Arroz",
-        "Salada",
-        "Batata frita"
+        "60°C",
+        "68°C",
+        "75°C"
       ]
     },
     {
       "id": 6,
       "difficulty": "easy",
-      "question": "Qual o melhor acompanhamento #6?",
+      "question": "Qual destes acompanhamentos é feito com farinha de mandioca?",
       "correct_answer": "Farofa",
       "incorrect_answers": [
-        "Arroz",
-        "Salada",
-        "Batata frita"
+        "Salada de batata",
+        "Arroz carreteiro",
+        "Maionese"
       ]
     },
     {
       "id": 7,
       "difficulty": "medium",
-      "question": "Qual o melhor acompanhamento #7?",
-      "correct_answer": "Farofa",
+      "question": "Qual país é conhecido pelo 'asado', semelhante ao churrasco brasileiro?",
+      "correct_answer": "Argentina",
       "incorrect_answers": [
-        "Arroz",
-        "Salada",
-        "Batata frita"
+        "México",
+        "Chile",
+        "Uruguai"
       ]
     },
     {
       "id": 8,
       "difficulty": "hard",
-      "question": "Qual o melhor acompanhamento #8?",
-      "correct_answer": "Farofa",
+      "question": "Qual é o nome da grelha usada no churrasco argentino?",
+      "correct_answer": "Parrilla",
       "incorrect_answers": [
-        "Arroz",
-        "Salada",
-        "Batata frita"
+        "Chapa",
+        "Grill",
+        "Braseiro"
       ]
     },
     {
       "id": 9,
-      "difficulty": "easy",
-      "question": "Qual o melhor acompanhamento #9?",
-      "correct_answer": "Farofa",
+      "difficulty": "medium",
+      "question": "Qual desses alimentos geralmente é colocado no espeto?",
+      "correct_answer": "Linguiça",
       "incorrect_answers": [
-        "Arroz",
-        "Salada",
-        "Batata frita"
+        "Queijo coalho",
+        "Pão de alho",
+        "Peixe cru"
       ]
     },
     {

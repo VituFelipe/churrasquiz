@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-// Função utilitária para embaralhar as opções
+// embaraia
 const shuffle = (array) => [...array].sort(() => Math.random() - 0.5);
 
 const QuestionCard = ({ question, onAnswer }) => {

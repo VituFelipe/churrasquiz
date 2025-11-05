@@ -11,25 +11,23 @@ const QuizScreen = ({ route, navigation }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Configura URL para JSON Server
   const API_URL = Platform.OS === 'android'
-    ? 'http://10.0.2.2:3000'   // Emulador Android
-    : 'http://192.168.15.11:3000'; // iOS ou físico (ajuste o IP)
+    ? 'http://10.0.2.2:3000'   
+    : 'http://192.168.15.11:3000'; 
 
-  // Função para carregar perguntas do servidor
   const loadQuestions = () => {
-    console.log('🚀 Carregando perguntas com dificuldade:', difficulty);
+    console.log('Carregando perguntas com dificuldade:', difficulty);
     setLoading(true);
     setError(null);
 
     axios.get(`${API_URL}/questions?difficulty=${difficulty}&_limit=10`)
       .then(res => {
-        console.log(`✅ ${res.data.length} perguntas carregadas`);
+        console.log(` ${res.data.length} perguntas carregadas`);
         setQuestions(res.data);
         setLoading(false);
       })
       .catch(err => {
-        console.error('❌ Erro ao buscar perguntas:', err.message);
+        console.error('Erro ao buscar perguntas:', err.message);
         setError('Falha na conexão com o servidor. Verifique se o JSON Server está rodando.');
         setLoading(false);
       });
@@ -45,7 +43,7 @@ const QuizScreen = ({ route, navigation }) => {
     const correct = questions[current].correct_answer;
     const isCorrect = selected === correct;
 
-    console.log(`🧐 Pergunta ${current + 1}: Resposta escolhida "${selected}" (${isCorrect ? 'CORRETA' : 'ERRADA'})`);
+    console.log(` Pergunta ${current + 1}: Resposta escolhida "${selected}" (${isCorrect ? 'CORRETA' : 'ERRADA'})`);
 
     if (isCorrect) setScore(prev => prev + 1);
 
@@ -53,7 +51,7 @@ const QuizScreen = ({ route, navigation }) => {
       setCurrent(prev => prev + 1);
     } else {
       const finalScore = isCorrect ? score + 1 : score;
-      console.log(`🏁 Quiz finalizado! Pontuação: ${finalScore}/10`);
+      console.log(` Quiz finalizado! Pontuação: ${finalScore}/10`);
       navigation.replace('Result', { score: finalScore, total: questions.length });
     }
   };

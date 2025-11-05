@@ -11,11 +11,11 @@ const ResultScreen = ({ route, navigation }) => {
     const linguica = (p * 0.2).toFixed(1);
     const cerveja = Math.round(p * 3.5);
 
-    console.log(`🍖 Gerando churras para ${p} pessoas...`);
+    console.log(`Gerando churras para ${p} pessoas...`);
 
     Alert.alert(
       '🍺 Seu Churras!',
-      `Para ${p} pessoas:\n\n🥩 Carne: ${carne} kg\n🌭 Linguiça: ${linguica} kg\n🍻 Cerveja: ${cerveja} latas`,
+      `Para ${p} pessoas:\n\n Carne: ${carne} kg\n Linguiça: ${linguica} kg\n Cerveja: ${cerveja} latas`,
       [{ text: 'OK' }]
     );
   };

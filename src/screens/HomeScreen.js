@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react
 
 const HomeScreen = ({ navigation }) => {
   const startQuiz = (difficulty) => {
-    console.log(`🎯 Iniciando quiz com dificuldade: ${difficulty}`);
+    console.log(`Iniciando quiz com dificuldade: ${difficulty}`);
     navigation.navigate('Quiz', { difficulty });
   };
 

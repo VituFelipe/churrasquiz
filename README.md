@@ -80,6 +80,8 @@ Abra o **Expo Go** no seu celular e escaneie o QR Code exibido no terminal.
 |--------|-----------|------------|
 | GET | `/questions` | Lista todas as perguntas |
 | GET | `/questions?id=1` | Retorna uma pergunta específica |
+| GET | `/questions?difficulty=easy` | Filtra perguntas por dificuldade |
+
 
 ---
 
@@ -108,15 +110,6 @@ Abra o **Expo Go** no seu celular e escaneie o QR Code exibido no terminal.
 
 ---
 
-## 📸 Screenshots
-| Tela | Preview |
-|------|----------|
-| Tela Inicial | *(adicione depois)* |
-| Quiz | *(adicione depois)* |
-| Resultado | *(adicione depois)* |
-
----
-
 ## 💡 Futuras Melhorias
 - Integração com banco de dados real  
 - Ranking de pontuações  
@@ -125,10 +118,70 @@ Abra o **Expo Go** no seu celular e escaneie o QR Code exibido no terminal.
 
 ---
 
-## 👨‍💻 Autor
-**Vitu Felipe**  
-💼 Desenvolvedor | F1rst (Santander Tecnologia)  
-📧 [Contato via GitHub](https://github.com/VituFelipe)
+## 🧩 1. Versões de Dependências Compatíveis
+| Pacote               | Versão Recomendada |
+| -------------------- | ------------------ |
+| **Node.js**          | 18.x LTS           |
+| **Expo SDK**         | 54                 |
+| **React**            | 19.1.0             |
+| **React Native**     | 0.81.5             |
+| **React Navigation** | 7.x                |
+| **Axios**            | 1.13.2             |
+| **JSON Server**      | 1.0.0+             |
+
+⚠️ Caso use Node 20 ou superior, o expo-cli antigo pode não funcionar. Use sempre npx expo no lugar de expo.
+
+## 🧰 2. Comandos Importantes
+
+Instalar dependências com as versões certas:
+```bash
+npx expo install expo@~54.0.22 react@19.1.0 react-native@0.81.5
+npx expo install react-native-screens react-native-safe-area-context react-native-gesture-handler
+```
+
+## 🌐 3. Configuração do JSON Server
+
+O servidor de perguntas roda localmente.
+Para iniciar:
+
+```bash
+npx json-server --watch db.json --host 0.0.0.0 --port 3000
+```
+
+
+E no aplicativo, defina o IP da sua máquina local (o mesmo da rede Wi-Fi do celular):
+
+```bash
+const API_URL = 'http://192.168.15.xxx:3000';
+```
+
+🔍 Descubra seu IP com o comando ipconfig (Windows) ou ifconfig (Mac/Linux).
+
+## 📱 4. Teste com Expo Go
+
+Instale o app Expo Go no celular.
+
+Conecte o celular e o PC na mesma rede Wi-Fi.
+
+Rode o app com:
+
+```bash
+npx expo start
+```
+
+
+Leia o QR Code exibido no terminal.
+
+⚠️ Caso o Expo Go mostre erro de SDK incompatível, use a mesma SDK 54 no projeto ("expo": "~54.0.22" no package.json).
+
+## 💾 5. Problemas Comuns
+| Erro                                                                | Causa                                 | Solução                                                                |
+| ------------------------------------------------------------------- | ------------------------------------- | ---------------------------------------------------------------------- |
+| `TypeError: expected dynamic type 'boolean', but had type 'string'` | Versões incompatíveis do React/Expo   | Reinstalar com `npx expo install` e limpar cache (`npx expo start -c`) |
+| `Cannot find module expo`                                           | Dependência faltando                  | Rode `npm install expo`                                                |
+| `Port 8081 is being used`                                           | Conflito de porta                     | Aceite mudar de porta ou use `--port 8082`                             |
+| `Network Error (Axios)`                                             | IP incorreto ou JSON Server desligado | Verifique o IP e se o servidor está ativo                              |
+
 
 ---
 

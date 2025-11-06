@@ -183,6 +183,11 @@ Leia o QR Code exibido no terminal.
 | `Network Error (Axios)`                                             | IP incorreto ou JSON Server desligado | Verifique o IP e se o servidor está ativo                              |
 
 
+## Modo Híbrido
+- **Online**: Open Trivia DB (perguntas reais)
+- **Offline**: 10.000 perguntas de churrasco BR
+
+
 ---
 
 ## 🧾 Licença

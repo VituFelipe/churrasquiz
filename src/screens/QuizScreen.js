@@ -4,33 +4,45 @@ import axios from 'axios';
 import QuestionCard from '../components/QuestionCard';
 
 const QuizScreen = ({ route, navigation }) => {
-  const { difficulty } = route.params;
+  const { difficulty, useOnline } = route.params;
+
   const [questions, setQuestions] = useState([]);
   const [current, setCurrent] = useState(0);
   const [score, setScore] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [source, setSource] = useState('');
 
-  const API_URL = Platform.OS === 'android'
-    ? 'http://10.0.2.2:3000'   
-    : 'http://192.168.15.11:3000'; 
+  const LOCAL_URL =
+    Platform.OS === 'android'
+      ? 'http://10.0.2.2:3000/questions'
+      : 'http://192.168.15.11:3000/questions';
 
-  const loadQuestions = () => {
-    console.log('Carregando perguntas com dificuldade:', difficulty);
+  const loadQuestions = async () => {
     setLoading(true);
-    setError(null);
 
-    axios.get(`${API_URL}/questions?difficulty=${difficulty}&_limit=10`)
-      .then(res => {
-        console.log(` ${res.data.length} perguntas carregadas`);
+    try {
+      if (useOnline) {
+        const res = await axios.get(`https://opentdb.com/api.php?amount=10&difficulty=${difficulty}&type=multiple`);
+
+        const formatted = res.data.results.map((q, index) => ({
+          id: index + 1,
+          question: q.question,
+          correct_answer: q.correct_answer,
+          incorrect_answers: q.incorrect_answers
+        }));
+
+        setQuestions(formatted);
+        setSource('🌐 Online (Open Trivia DB)');
+      } else {
+        const res = await axios.get(`${LOCAL_URL}?difficulty=${difficulty}&_limit=10`);
         setQuestions(res.data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error('Erro ao buscar perguntas:', err.message);
-        setError('Falha na conexão com o servidor. Verifique se o JSON Server está rodando.');
-        setLoading(false);
-      });
+        setSource('💾 Local (JSON Server)');
+      }
+    } catch (err) {
+      setSource('Erro');
+    }
+
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -38,21 +50,15 @@ const QuizScreen = ({ route, navigation }) => {
   }, []);
 
   const handleAnswer = (selected) => {
-    if (!questions[current]) return;
-
     const correct = questions[current].correct_answer;
     const isCorrect = selected === correct;
-
-    console.log(` Pergunta ${current + 1}: Resposta escolhida "${selected}" (${isCorrect ? 'CORRETA' : 'ERRADA'})`);
 
     if (isCorrect) setScore(prev => prev + 1);
 
     if (current < questions.length - 1) {
       setCurrent(prev => prev + 1);
     } else {
-      const finalScore = isCorrect ? score + 1 : score;
-      console.log(` Quiz finalizado! Pontuação: ${finalScore}/10`);
-      navigation.replace('Result', { score: finalScore, total: questions.length });
+      navigation.replace('Result', { score, total: questions.length });
     }
   };
 
@@ -60,25 +66,18 @@ const QuizScreen = ({ route, navigation }) => {
     return (
       <View style={styles.center}>
         <ActivityIndicator size="large" color="#FF4500" />
-        <Text style={{ marginTop: 10 }}>Carregando perguntas...</Text>
-      </View>
-    );
-  }
-
-  if (error) {
-    return (
-      <View style={styles.center}>
-        <Text style={styles.error}>{error}</Text>
-        <TouchableOpacity style={styles.retry} onPress={loadQuestions}>
-          <Text style={styles.retryText}>🔄 Tentar novamente</Text>
-        </TouchableOpacity>
+        <Text>Carregando perguntas...</Text>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.progress}>Pergunta {current + 1} / {questions.length}</Text>
+      <Text style={styles.source}>{source}</Text>
+      <Text style={styles.progress}>
+        Pergunta {current + 1} / {questions.length}
+      </Text>
+
       {questions.length > 0 && (
         <QuestionCard question={questions[current]} onAnswer={handleAnswer} />
       )}
@@ -89,10 +88,8 @@ const QuizScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: '#FFF8DC' },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  progress: { fontSize: 18, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 },
-  error: { color: 'red', fontSize: 18, marginBottom: 20, textAlign: 'center' },
-  retry: { backgroundColor: '#FF4500', padding: 15, borderRadius: 10 },
-  retryText: { color: '#fff', fontWeight: 'bold' },
+  progress: { fontSize: 18, fontWeight: 'bold', textAlign: 'center', marginBottom: 10 },
+  source: { textAlign: 'center', color: '#444', marginBottom: 10, fontSize: 14 },
 });
 
 export default QuizScreen;
